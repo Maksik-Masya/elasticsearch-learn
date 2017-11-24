@@ -30,8 +30,7 @@ public class OnStartUp implements InitializingBean {
 	    run();
 	}
 
-
-    public void run() throws Exception {
+    private void run() throws Exception {
 
         LOG.info("start up...");
 
@@ -47,7 +46,6 @@ public class OnStartUp implements InitializingBean {
         //List<Book> books = bookService.findByTitle("Elasticsearch Basics");
 
         books.forEach(x -> System.out.println(x));
-
 
     }
 

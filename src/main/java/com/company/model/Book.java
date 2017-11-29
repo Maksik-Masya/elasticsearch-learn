@@ -3,11 +3,13 @@ package com.company.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import java.util.Random;
+
 @Document(indexName = "library", type = "books")
 public class Book {
 
     @Id
-    private String id;
+    private Long id;
 
     private String title;
 
@@ -18,18 +20,18 @@ public class Book {
     public Book() {
     }
 
-    public Book(String id, String title, String author, String releaseDate) {
-        this.id = id;
+    public Book(final String title, final String author, final String releaseDate) {
+        this.id = generateID();
         this.title = title;
         this.author = author;
         this.releaseDate = releaseDate;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -37,7 +39,7 @@ public class Book {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -45,7 +47,7 @@ public class Book {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(final String author) {
         this.author = author;
     }
 
@@ -53,7 +55,7 @@ public class Book {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(final String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -65,6 +67,14 @@ public class Book {
                 ", author='" + author + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 '}';
+    }
+
+    private long generateID() {
+        final Random rn = new Random();
+        final int minimum = 1;
+        final int maximum = 100000;
+        final int range = maximum - minimum + 1;
+        return (long) (rn.nextInt(range) + minimum);
     }
 }
 

@@ -2,7 +2,6 @@ package com.company.config;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
-
 import org.elasticsearch.node.InternalSettingsPreparer;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.plugins.Plugin;

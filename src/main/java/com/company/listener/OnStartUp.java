@@ -19,13 +19,10 @@ public class OnStartUp implements InitializingBean {
 
 	private Logger LOG = LoggerFactory.getLogger(getClass());
 
-    private final ElasticsearchOperations es;
-
     private final BookService bookService;
 
     @Autowired
-    public OnStartUp(ElasticsearchOperations es, BookService bookService) {
-        this.es = es;
+    public OnStartUp(BookService bookService) {
         this.bookService = bookService;
     }
 
@@ -36,33 +33,18 @@ public class OnStartUp implements InitializingBean {
 
     private void run() throws Exception {
 
-        LOG.info("start up...");
+        LOG.info("Check if data exist...");
 
-        printElasticSearchInfo();
-
-        bookService.save(new Book("1001", "Elasticsearch Basics", "Rambabu Posa", "23-FEB-2017"));
-        bookService.save(new Book("1002", "Apache Lucene Basics", "Rambabu Posa", "13-MAR-2017"));
-        bookService.save(new Book("1003", "Apache Solr Basics", "Rambabu Posa", "21-MAR-2017"));
-
-        //fuzzey search
-        Page<Book> books = bookService.findByAuthor("Rambabu", PageRequest.of(0, 10));
-
-        //List<Book> books = bookService.findByTitle("Elasticsearch Basics");
-
-        books.forEach(System.out::println);
-
+        if (bookService.findAll(PageRequest.of(0, 1)).getContent().isEmpty()) {
+            generateDummyData();
+        }
     }
 
+    private void generateDummyData() {
+        LOG.info("Generate dummy data...");
 
-    private void printElasticSearchInfo() {
-
-        System.out.println("--ElasticSearch-->");
-        Client client = es.getClient();
-        Map<String, String> asMap = client.settings().getAsMap();
-
-        asMap.forEach((k, v) -> {
-            System.out.println(k + " = " + v);
-        });
-        System.out.println("<--ElasticSearch--");
+        bookService.save(new Book("Elasticsearch Basics", "Rambabu Posa", "23-FEB-2017"));
+        bookService.save(new Book("Apache Lucene Basics", "Rambabu Posa", "13-MAR-2017"));
+        bookService.save(new Book("Apache Solr Basics", "Rambabu Posa", "21-MAR-2017"));
     }
 }

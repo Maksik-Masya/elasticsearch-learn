@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @RequestMapping(path = "/")
-    public String home(final Model model) {
-        model.addAttribute("user", "Max");
-        return "home";
+    public String index(final Model model) {
+        return "redirect:/book/list";
     }
 }

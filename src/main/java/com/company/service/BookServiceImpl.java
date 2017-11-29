@@ -28,7 +28,7 @@ public class BookServiceImpl implements BookService {
     }
 
     public Book findOne(String id) {
-        return bookRepository.findOne(id);
+        return bookRepository.findById(id).orElse(null);
     }
 
     public Iterable<Book> findAll() {

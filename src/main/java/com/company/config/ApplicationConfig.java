@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ApplicationConfig {
-    protected Logger LOG = LoggerFactory.getLogger(getClass());
+    private Logger LOG = LoggerFactory.getLogger(getClass());
 
 }

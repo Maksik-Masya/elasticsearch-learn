@@ -2,6 +2,11 @@ package com.company.config;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
+
+import org.elasticsearch.node.InternalSettingsPreparer;
+import org.elasticsearch.node.Node;
+import org.elasticsearch.plugins.Plugin;
+import org.elasticsearch.transport.Netty4Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,14 +17,15 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
+import java.util.Collection;
+import java.util.Collections;
 
 @PropertySource("classpath:/application.properties")
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.company.repository")
 public class ElasticSearchConfig {
 
-    protected Logger LOG = LoggerFactory.getLogger(getClass());
+    private Logger LOG = LoggerFactory.getLogger(getClass());
 
     @Value("${elasticsearch.host}")
     private String EsHost;
@@ -36,9 +42,16 @@ public class ElasticSearchConfig {
     @Bean
     public Client client() throws Exception {
 
-        final Settings settings = Settings.builder().put("cluster.name", EsClusterName).put("path.home", EsDataPath).put("name", "Ubuntu 16.04").build();
+        final Settings settings = Settings.builder()
+                .put("cluster.name", EsClusterName)
+                .put("path.home", EsDataPath)
+                .put("node.name", "Ubuntu 16.04")
+                .put("transport.type", "local")
+                .put("http.enabled", true)
+                .build();
 
-        return nodeBuilder().settings(settings).clusterName(EsClusterName).local(true).node().client();
+        final Collection<Class<? extends Plugin>> plugins = Collections.singletonList(Netty4Plugin.class);
+        return new PluginConfigurableNode(settings, plugins).start().client();
     }
 
     @Bean
@@ -46,4 +59,9 @@ public class ElasticSearchConfig {
         return new ElasticsearchTemplate(client());
     }
 
+    private static class PluginConfigurableNode extends Node {
+        PluginConfigurableNode(Settings settings, Collection<Class<? extends Plugin>> classpathPlugins) {
+            super(InternalSettingsPreparer.prepareEnvironment(settings, null), classpathPlugins);
+        }
+    }
 }

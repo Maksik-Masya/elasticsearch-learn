@@ -19,11 +19,15 @@ public class OnStartUp implements InitializingBean {
 
 	private Logger LOG = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private ElasticsearchOperations es;
+    private final ElasticsearchOperations es;
+
+    private final BookService bookService;
 
     @Autowired
-    private BookService bookService;
+    public OnStartUp(ElasticsearchOperations es, BookService bookService) {
+        this.es = es;
+        this.bookService = bookService;
+    }
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -45,7 +49,7 @@ public class OnStartUp implements InitializingBean {
 
         //List<Book> books = bookService.findByTitle("Elasticsearch Basics");
 
-        books.forEach(x -> System.out.println(x));
+        books.forEach(System.out::println);
 
     }
 

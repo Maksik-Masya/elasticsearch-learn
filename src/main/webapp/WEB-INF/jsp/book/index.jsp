@@ -3,30 +3,14 @@
 
 <html>
 <head>
-    <title></title>
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
+    <title>Book List</title>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/theme1/css/main.css" />">
 </head>
 <body>
 
-<a href="<c:url value="/book/edit" />">ADD BOOK</a>
+<a class="btn-info" href="<c:url value="/book/edit" />">ADD BOOK</a>
 
-<table>
+<table class="margin-top-25">
     <tr>
         <th>ID</th>
         <th>Title</th>
@@ -42,7 +26,16 @@
             <td>${book.author}</td>
             <td>${book.releaseDate}</td>
             <td>
-                <a href="<c:url value="/book/edit"><c:param name="id" value="${book.id}" /></c:url>">EDIT BOOK</a>
+                <div class="table-actions-btn">
+                    <form style="float: left" action="<c:url value="/book/edit" />" method="GET">
+                        <input type="hidden" name="id" value="${book.id}" />
+                        <input type="submit" value="EDIT">
+                    </form>
+                    <form style="float: right" action="<c:url value="/book/delete" />" method="POST">
+                        <input type="hidden" name="id" value="${book.id}" />
+                        <input type="submit" value="DELETE">
+                    </form>
+                </div>
             </td>
         </tr>
     </c:forEach>

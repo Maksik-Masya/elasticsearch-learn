@@ -36,19 +36,17 @@ public class BookController extends BaseController {
         } else {
             updatedBook = new Book(book.getTitle(), book.getAuthor(), book.getReleaseDate());
         }
-
         bookService.save(updatedBook);
-
         return "redirect:/book/list";
     }
 
     @GetMapping(value = "/edit")
     public String addBook(final Model model, @RequestParam(required = false) Long id) {
+        LOG.debug("Get edit page for book id=  " + id);
 
         if (id != null) {
             model.addAttribute("book", bookService.findOne(id));
         }
-
         return "book/edit";
     }
 
@@ -58,7 +56,14 @@ public class BookController extends BaseController {
 
         Page<Book> books = bookService.findAll(PageRequest.of(0, 10));
         model.addAttribute("books", books.getContent());
-
         return "book/index";
+    }
+
+    @PostMapping(value = "/delete")
+    public String deleteBook(@RequestParam Long id) {
+        LOG.debug("Delete book with id = " + id);
+
+        bookService.delete(bookService.findOne(id));
+        return "redirect:/book/list";
     }
 }

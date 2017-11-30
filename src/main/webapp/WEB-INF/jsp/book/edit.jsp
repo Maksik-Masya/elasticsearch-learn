@@ -3,52 +3,8 @@
 
 <html>
 <head>
-    <title></title>
-    <style>
-        input[type=text], select {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .control-buttons {
-            border-radius: 5px;
-            background-color: #f2f2f2;
-            padding: 20px;
-        }
-        .save {
-            width: 100px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .save:hover {
-            background-color: #45a049;
-        }
-
-        .cancel {
-            width: 100px;
-            background-color: #fe1408;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .cancel:hover {
-            background-color: #c21909;
-        }
-
-    </style>
+    <title>Edit</title>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/theme1/css/main.css" />">
 </head>
 <body>
 <form action="<c:url value="/book/save" />" method="post">
@@ -67,7 +23,7 @@
 
     <div class="control-buttons">
         <input class="save" type="submit" value="Save">
-        <input class="cancel" type="button" value="Cancel">
+        <a class="btn-cancel" href="<c:url value="/book/list" />">Cancel</a>
     </div>
 </form>
 
